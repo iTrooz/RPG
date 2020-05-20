@@ -3,6 +3,7 @@ import json
 
 def save(fname="../saves/save.json"):
 	f = open(fname, "w")
+
 	saveobj = {}
 	saveobj["ticks"] = utils.ticks
 	saveobj["scene"] = utils.actual_scene.id
@@ -14,8 +15,8 @@ def save(fname="../saves/save.json"):
 
 
 def restore(fname="../saves/save.json"):
-
 	f = open(fname, "r")
+
 	saveobj = json.loads(f.read())
 	utils.ticks = saveobj["ticks"]
 	utils.actual_scene = utils.searchScene(saveobj["scene"])
