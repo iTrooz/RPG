@@ -9,21 +9,16 @@ class Scene:
 	def __init__(self, ida):
 		self.id = ida
 
-
-	def draw(self, draw_surface):
-
+	def draw(self, play_state):
 		# définir la zone que la caméra voit
-		box_x = math.floor(utils.camera_x / utils.tile_size)
-		box_y = math.floor(utils.camera_y / utils.tile_size)
+		box_x = math.floor(play_state.camera_x / utils.tile_size)
+		box_y = math.floor(play_state.camera_y / utils.tile_size)
 		box_w = math.floor(utils.WIDTH / utils.tile_size)+1
-		box_h = math.floor(utils.HEIGHT / utils.tile_size)+1
-
+		box_h = math.floor(utils.HEIGHT / utils.tile_size)+2
 
 		# pour chaque coordonnée visible par la caméra
-		for i in range(box_w):
-			for j in range(box_h):
-				x = box_x + i
-				y = box_y + j
+		for x in range(box_x, box_x+box_w):
+			for y in range(box_y, box_y+box_h):
 
 				# passer si il ne contient pas une case de la carte
 				if y<0 or y>=len(self.map):
@@ -34,7 +29,7 @@ class Scene:
 				# sinon dessiner la tuile
 				tile_type = self.map[y][x]
 				screen_x, screen_y = utils.convertCoordinates(x, y)
-				utils.drawSprite(draw_surface, utils.tile_set, utils.tile_size, screen_x, screen_y, tile_type.sheet_x, tile_type.sheet_y)
+				utils.drawSprite(utils.tile_set, utils.tile_size, screen_x, screen_y, tile_type.sheet_x, tile_type.sheet_y)
 
 
 

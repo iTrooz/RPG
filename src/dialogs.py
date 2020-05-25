@@ -4,6 +4,58 @@ import pygame
 actual_color = (255, 255, 255)
 pixels = None
 
+class Button:
+	sheet_x = None
+	sheet_y = None
+
+	x = None
+	y = None
+	w = None
+
+	isPress = False
+	isHover = False
+
+	def __init__(self, x, y, w, sheet_x, sheet_y):
+		self.x = x
+		self.y = y
+		self.w = w
+		self.sheet_x = sheet_x
+		self.sheet_y = sheet_y
+
+	def update(self):
+		m_x, m_y = pygame.mouse.get_pos()
+		self.isHover = self.isMouseOver(m_x, m_y)
+		if (self.isHover):
+			self.isPress = pygame.mouse.get_pressed()[0]
+
+	def draw(self):
+		if self.isPress:
+			shift = 6
+		elif self.isHover:
+			shift = 3
+		else:
+			shift = 0
+
+		# draw left border
+		utils.game_display.blit(utils.ui_set, (self.x, self.y), ((self.sheet_x+shift) * utils.ui_size, self.sheet_y * utils.ui_size, utils.ui_size, utils.ui_size * 2))
+		# draw middle
+		if self.w>2:
+			for i in range(1, self.w-1):
+				utils.game_display.blit(utils.ui_set, (self.x + i * utils.ui_size, self.y), ((self.sheet_x+shift+1) * utils.ui_size, self.sheet_y * utils.ui_size, utils.ui_size, utils.ui_size * 2))
+		# draw right border
+		utils.game_display.blit(utils.ui_set, (self.x + (self.w-1) * utils.ui_size, self.y), ((self.sheet_x+shift+2) * utils.ui_size, self.sheet_y * utils.ui_size, utils.ui_size, utils.ui_size * 2))
+
+	def isMouseOver(self, mouse_x, mouse_y):
+		return not(mouse_x >= self.x+self.w*utils.ui_size
+				or mouse_x <= self.x
+				or mouse_y >= self.y+utils.ui_size*2
+				or mouse_y <= self.y)
+
+
+
+
+
+
 
 def setTextColor(new_color):
 	global actual_color
@@ -14,42 +66,11 @@ def setTextColor(new_color):
 		actual_color = new_color
 		del pixels
 
-def drawText(draw_surface, text, x, y):
+def drawText(text, x, y):
 	screen_x = x
 	screen_y = y
 
 	i = 0
-
-	special = ""
-
-	# while (i<len(text)):
-	# 	c = text[i]
-	# 	k = ord(c)
-	# 	val = 95
-	#
-	# 	# gestion caractere special
-	# 	if special != "":
-	#
-	# 		if c == '/':
-	# 			val = 15
-	# 			special = ""
-	# 		elif k > 31 and k < 127 and c.isalpha():
-	# 			val = k + 32
-	# 			special = ""
-	#
-	# 	# indication caractere special
-	# 	elif c == '/':
-	# 		special = "/"
-	# 	# caractere normal
-	# 	else:
-	# 		if k > 31 and k < 127:
-	# 			val = k - 32
-	#
-	# 	if special=="":
-	# 		drawChar(draw_surface, screen_x, screen_y, val)
-	# 		screen_x += utils.char_size
-	#
-	# 	i+=1
 
 	while (i<len(text)):
 		c = text[i]
@@ -65,7 +86,7 @@ def drawText(draw_surface, text, x, y):
 			if k > 31 and k < 127:
 				val = k - 32
 
-		drawChar(draw_surface, screen_x, screen_y, val)
+		drawChar(utils.game_display, screen_x, screen_y, val)
 		screen_x += utils.char_size
 
 		i+=1

@@ -12,8 +12,8 @@ class Direction:
 		self.key = key
 
 SOUTH = Direction(0, (0, 1), pygame.K_DOWN)
-EAST = Direction(1, (1, 0), pygame.K_RIGHT)
-WEST = Direction(2, (-1, 0), pygame.K_LEFT)
+WEST = Direction(1, (-1, 0), pygame.K_LEFT)
+EAST = Direction(2, (1, 0), pygame.K_RIGHT)
 NORTH = Direction(3, (0, -1), pygame.K_UP)
 
 directs = [SOUTH,WEST,NORTH,EAST]

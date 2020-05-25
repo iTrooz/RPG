@@ -6,7 +6,6 @@ import directions
 
 
 class Entity:
-
 	x = 0
 	y = 0
 
@@ -16,23 +15,23 @@ class Entity:
 		pass
 
 
-# Player / Monster / NPC / ...
 class AliveEntity(Entity):
-	movement_speed = 10
 	animation_manager = None
 
 	moving = False
 	stop_moving = False
 	moving_pixel = 0
-	# pixels par frame
-	speed = utils.tile_size / 10
+
+	# pourcentage d'avancement d'un block par frame (0-1)
+	# doit être un nombre tel que 100/x = entier
+	speed = 0.2
 
 	down_keys = [None] * 4
 
-	x = 12
-	y = 9
+	x = 13
+	y = 10
 
-	def draw(self, draw_surface):
+	def draw(self):
 		# transform coordinates
 		screen_x, screen_y = utils.convertCoordinates(self.x, self.y)
 		if self.moving:
@@ -41,24 +40,19 @@ class AliveEntity(Entity):
 		# get sprite
 		sheet_x, sheet_y = self.animation_manager.getSpritePos(self.direction)
 		# draw
-		draw_surface.blit(utils.tile_set, (screen_x, screen_y), (sheet_x * utils.tile_size, sheet_y * utils.tile_size, utils.tile_size, utils.tile_size))
-
-
-
+		utils.game_display.blit(utils.tile_set, (screen_x, screen_y), (sheet_x * utils.tile_size, sheet_y * utils.tile_size, utils.tile_size, utils.tile_size))
 
 	"""ENTITY MOVEMENT"""
 
 	def update(self):
 		super().update()
 		if self.moving:
-			self.moving_pixel+=self.speed
+			self.moving_pixel = (self.moving_pixel+self.speed*utils.tile_size) # passage 0-1 en 0-32 pour les 32 pixels du tile_size
 			if self.moving_pixel>= utils.tile_size:
 				self.moving_pixel = 0
 				self.x+=self.direction.xy[0]
 				self.y+=self.direction.xy[1]
-
 				self.moving = False
-
 		else:
 			for i in range(len(self.down_keys)):
 				if self.down_keys[i] is not None:
@@ -70,27 +64,25 @@ class AliveEntity(Entity):
 	def hasCollision(self):
 		# 3- pour faire l'inverse
 
-		ctile = utils.actual_scene.map[self.y][self.x]
+		# test si on peut sortir de la case actuelle
+		ctile = utils.play_state.actual_scene.map[self.y][self.x]
 		if ctile.coll_sides[self.direction.id]:
 			return True
 
-		ny, nx = self.y + self.direction.xy[1], self.x + self.direction.xy[0]
+		# obtenir la position de la prochaine case
+		nx, ny  = self.x + self.direction.xy[0], self.y + self.direction.xy[1]
 
-		if nx < 0 or nx == utils.actual_scene.map_width or ny < 0 or ny == utils.actual_scene.map_height:
+		# test si la prochaine case est dans la carte
+		if nx < 0 or nx == utils.play_state.actual_scene.map_width or ny < 0 or ny == utils.play_state.actual_scene.map_height:
 			return True
 
-		ctile = utils.actual_scene.map[ny][nx]
+		# test si on peut entrer dans la prochaine case
+		ctile = utils.play_state.actual_scene.map[ny][nx]
 		if ctile.coll_sides[3 - self.direction.id]:
 			return True
 
+		# aucune collision prévue
 		return False
-
-	# def move(self):
-	# 	if not self.moving:
-	# 		if not self.hasCollision():
-	# 			self.moving = True
-
-
 
 
 class Player(AliveEntity):
@@ -102,8 +94,8 @@ class Player(AliveEntity):
 		super().update()
 		self.animation_manager.updateAnim()
 
-	def draw(self, draw_surface):
-		super().draw(draw_surface)
+	def draw(self):
+		super().draw()
 
 	def keyDetection(self, event):
 		key = event.key
