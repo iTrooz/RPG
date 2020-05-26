@@ -3,6 +3,7 @@ import pygame
 from entities import animation, animationInstances
 import utils
 from others import directions
+from states import states_instances
 
 
 class Entity:
@@ -24,14 +25,14 @@ class AliveEntity(Entity):
 
 	# pourcentage d'avancement d'un block par frame (0-1)
 	# doit être un nombre tel que 100/x = entier
-	speed = 0.2
+	speed = 0.4
 
 	down_keys = [None] * 4
 
 	x = 13
 	y = 10
 
-	def draw(self):
+	def preDraw(self):
 		# transform coordinates
 		screen_x, screen_y = utils.convertCoordinates(self.x, self.y)
 		if self.moving:
@@ -40,7 +41,15 @@ class AliveEntity(Entity):
 		# get sprite
 		sheet_x, sheet_y = self.animation_manager.getSpritePos(self.direction)
 		# draw
-		utils.game_display.blit(utils.tile_set, (screen_x, screen_y), (sheet_x * utils.tile_size, sheet_y * utils.tile_size, utils.tile_size, utils.tile_size))
+		return (screen_x, screen_y), sheet_x, sheet_y
+
+	def finalDraw(self, screen, sheet_x, sheet_y, ysize=utils.tile_size):
+		utils.game_display.blit(utils.tile_set, screen, (sheet_x * utils.tile_size, sheet_y * utils.tile_size, utils.tile_size, ysize))
+
+
+	def draw(self):
+		screen, sheet_x, sheet_y = self.preDraw()
+		self.finalDraw(screen, sheet_x, sheet_y)
 
 	"""ENTITY MOVEMENT"""
 
@@ -54,7 +63,7 @@ class AliveEntity(Entity):
 				self.y+=self.direction.xy[1]
 				self.moving = False
 
-		else:
+		if not self.moving:
 			for i in range(len(self.down_keys)):
 				if self.down_keys[i] is not None:
 					self.direction = self.down_keys[i]
@@ -66,7 +75,7 @@ class AliveEntity(Entity):
 		# 3- pour faire l'inverse
 
 		# test si on peut sortir de la case actuelle
-		ctile = utils.play_state.actual_scene.map[self.y][self.x]
+		ctile = states_instances.play_state.actual_scene.map[self.y][self.x]
 		if ctile.coll_sides[self.direction.id]:
 			return True
 
@@ -74,11 +83,11 @@ class AliveEntity(Entity):
 		nx, ny  = self.x + self.direction.xy[0], self.y + self.direction.xy[1]
 
 		# test si la prochaine case est dans la carte
-		if nx < 0 or nx == utils.play_state.actual_scene.map_width or ny < 0 or ny == utils.play_state.actual_scene.map_height:
+		if nx < 0 or nx == states_instances.play_state.actual_scene.map_width or ny < 0 or ny == states_instances.play_state.actual_scene.map_height:
 			return True
 
 		# test si on peut entrer dans la prochaine case
-		ctile = utils.play_state.actual_scene.map[ny][nx]
+		ctile = states_instances.play_state.actual_scene.map[ny][nx]
 		if ctile.coll_sides[3 - self.direction.id]:
 			return True
 
@@ -89,6 +98,7 @@ class AliveEntity(Entity):
 class Player(AliveEntity):
 
 	anim_tp = 0
+	teleporter = None
 
 	def __init__(self):
 		self.animation_manager = animation.AnimationManager(animationInstances.player_anim_set, "walk")
@@ -96,22 +106,45 @@ class Player(AliveEntity):
 	def update(self):
 		super().update()
 		if self.moving:
-			self.anim_tp = 0
+			self.teleporter = None
 		else:
-			ctile = utils.play_state.actual_scene.map[self.y][self.x]
+			ctile = states_instances.play_state.actual_scene.map[self.y][self.x]
 			if ctile.teleport is not None:
+				self.teleporter = ctile.teleport
 				self.anim_tp+=1
-				if self.anim_tp==60:
+
+				if ctile.teleport["scene"] == states_instances.play_state.actual_scene:
+					pass # je le ferai plus tard
+
+				if self.anim_tp==utils.tile_size:
 					self.anim_tp = 0
-					if ctile.teleport.scene == utils.play_state.actual_scene:
+					self.teleporter = None
+					if ctile.teleport["scene"] == states_instances.play_state.actual_scene:
 						pass
 					self.x = ctile.teleport["x"]
 					self.y = ctile.teleport["y"]
 
+			if self.teleporter is None and self.anim_tp > 0:
+				self.anim_tp -= 3
+				if self.anim_tp < 0:
+					self.anim_tp = 0
 		self.animation_manager.updateAnim()
 
 	def draw(self):
-		super().draw()
+
+		if self.anim_tp == 0:
+			super().draw()
+		else:
+			(screen_x, screen_y), sheet_x, sheet_y = super().preDraw()
+
+			super().finalDraw((screen_x, screen_y), sheet_x, sheet_y, utils.tile_size-self.anim_tp)
+			# super().finalDraw((screen_x, screen_y+self.anim_tp), sheet_x, sheet_y, utils.tile_size-self.anim_tp)
+
+			if self.teleporter is not None and self.teleporter["scene"] == utils.actual_state.actual_scene:
+				screen_x, screen_y = utils.convertCoordinates(self.teleporter["x"], self.teleporter["y"])
+
+				super().finalDraw((screen_x, screen_y), sheet_x, sheet_y, self.anim_tp)
+				# super().finalDraw((screen_x, screen_y+(32-self.anim_tp)), sheet_x, sheet_y, self.anim_tp)
 
 	def keyDetection(self, event):
 		key = event.key

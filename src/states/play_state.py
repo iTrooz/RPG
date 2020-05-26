@@ -1,13 +1,13 @@
 import pygame
 from others import saver, dialogs
 import math
-from game_states.game_state import GameState
+from states.state import GameState
 from world import sceneInstances
 from entities import entities
 import utils
 
 
-class PlayGameState(GameState):
+class PlayState(GameState):
 
 	camera_x = 0
 	camera_y = 0
@@ -16,39 +16,38 @@ class PlayGameState(GameState):
 
 	actual_scene = None
 	player = None
-
-	world_ticks = 0
+	actual_scene = None # set in utils
 
 	but = dialogs.Button(20, 20, "Bouton")
 
 	# -------------------------------- #
 
 	def __init__(self):
-		self.actual_scene = sceneInstances.forest
 		self.player = entities.Player()
 
 	def selected(self):
 		pass
 
 	def update(self):
-		self.world_ticks += 1
+
+		utils.game_display.fill((0, 0, 0))
 
 		# updating
 		handleEvents(self)
-		self.player.update()
-		for i in self.actual_entities:
-			i.update()
-		updateCameraToPlayer(self)
+		self.actual_scene.draw()
 
-		# drawing
-		utils.game_display.fill((0, 0, 0))
-		self.actual_scene.draw(self)
-		for i in self.actual_entities:
-			i.draw()
+		self.player.update()
 		self.player.draw()
 
+		for i in self.actual_entities:
+			i.update()
+			i.draw()
+
+		updateCameraToPlayer(self)
+
+
 		# text example
-		text_x, text_y = utils.convertCoordinates(math.cos(self.world_ticks / 20) + 2, math.sin(self.world_ticks / 20) + 2)
+		text_x, text_y = utils.convertCoordinates(math.cos(utils.ticks / 20) + 2, math.sin(utils.ticks / 20) + 2)
 		dialogs.setTextColor((255, 255, 255))
 		dialogs.drawText("Salut! /?C/-omo est/-as?", text_x - utils.scale_factor, text_y)
 		dialogs.drawText("Salut! /?C/-omo est/-as?", text_x + utils.scale_factor, text_y)

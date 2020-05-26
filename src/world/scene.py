@@ -9,10 +9,10 @@ class Scene:
 	def __init__(self, ida):
 		self.id = ida
 
-	def draw(self, play_state):
+	def draw(self):
 		# définir la zone que la caméra voit
-		box_x = math.floor(play_state.camera_x / utils.tile_size)
-		box_y = math.floor(play_state.camera_y / utils.tile_size)
+		box_x = math.floor(utils.actual_state.camera_x / utils.tile_size)
+		box_y = math.floor(utils.actual_state.camera_y / utils.tile_size)
 		box_w = math.floor(utils.WIDTH / utils.tile_size) + 1
 		box_h = math.floor(utils.HEIGHT / utils.tile_size) + 2
 

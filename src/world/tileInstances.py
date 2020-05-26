@@ -1,4 +1,5 @@
 from world import tile
+from world import sceneInstances
 
 # grass
 grs = tile.Tile(6, 0, False, False, False, False)
@@ -16,4 +17,4 @@ gse = tile.Tile(3, 3, True , False, True , False)
 
 # grass hidden teleporter
 gt_ = grs.copy()
-gt_.teleport = {"x":5, "y":5}
+gt_.teleport = {"x":5, "y":5,"scene": sceneInstances.forest}

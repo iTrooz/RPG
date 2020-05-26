@@ -2,11 +2,14 @@ import time
 from datetime import datetime
 import pygame
 import utils
-from game_states import play_game_state
+from states import states_instances
 
-# initialise game states
-utils.play_state = play_game_state.PlayGameState()
-utils.actual_state = utils.play_state
+"""
+main -> constructeurs -> instances ->  -> utils
+"""
+
+
+# initializing
 
 # game updating
 def gameUpdate():
