@@ -2,7 +2,7 @@ import pygame
 
 from entities import animation, animationInstances
 import utils
-import directions
+from others import directions
 
 
 class Entity:
@@ -47,12 +47,13 @@ class AliveEntity(Entity):
 	def update(self):
 		super().update()
 		if self.moving:
-			self.moving_pixel = (self.moving_pixel+self.speed*utils.tile_size) # passage 0-1 en 0-32 pour les 32 pixels du tile_size
+			self.moving_pixel = (self.moving_pixel + self.speed * utils.tile_size) # passage 0-1 en 0-32 pour les 32 pixels du tile_size
 			if self.moving_pixel>= utils.tile_size:
 				self.moving_pixel = 0
 				self.x+=self.direction.xy[0]
 				self.y+=self.direction.xy[1]
 				self.moving = False
+
 		else:
 			for i in range(len(self.down_keys)):
 				if self.down_keys[i] is not None:
@@ -87,11 +88,26 @@ class AliveEntity(Entity):
 
 class Player(AliveEntity):
 
+	anim_tp = 0
+
 	def __init__(self):
 		self.animation_manager = animation.AnimationManager(animationInstances.player_anim_set, "walk")
 
 	def update(self):
 		super().update()
+		if self.moving:
+			self.anim_tp = 0
+		else:
+			ctile = utils.play_state.actual_scene.map[self.y][self.x]
+			if ctile.teleport is not None:
+				self.anim_tp+=1
+				if self.anim_tp==60:
+					self.anim_tp = 0
+					if ctile.teleport.scene == utils.play_state.actual_scene:
+						pass
+					self.x = ctile.teleport["x"]
+					self.y = ctile.teleport["y"]
+
 		self.animation_manager.updateAnim()
 
 	def draw(self):

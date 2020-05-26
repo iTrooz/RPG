@@ -42,13 +42,13 @@ class Button:
 			shift = 0
 
 		# draw left border
-		utils.game_display.blit(utils.ui_set, (self.x, self.y), ((self.sheet_x+shift) * utils.ui_size, self.sheet_y * utils.ui_size, utils.ui_size, utils.ui_size * 2))
+		utils.game_display.blit(utils.ui_set, (self.x, self.y), ((self.sheet_x + shift) * utils.ui_size, self.sheet_y * utils.ui_size, utils.ui_size, utils.ui_size * 2))
 		# draw middle
 		if self.w>2:
 			for i in range(1, self.w-1):
-				utils.game_display.blit(utils.ui_set, (self.x + i * utils.ui_size, self.y), ((self.sheet_x+shift+1) * utils.ui_size, self.sheet_y * utils.ui_size, utils.ui_size, utils.ui_size * 2))
+				utils.game_display.blit(utils.ui_set, (self.x + i * utils.ui_size, self.y), ((self.sheet_x + shift + 1) * utils.ui_size, self.sheet_y * utils.ui_size, utils.ui_size, utils.ui_size * 2))
 		# draw right border
-		utils.game_display.blit(utils.ui_set, (self.x + (self.w-1) * utils.ui_size, self.y), ((self.sheet_x+shift+2) * utils.ui_size, self.sheet_y * utils.ui_size, utils.ui_size, utils.ui_size * 2))
+		utils.game_display.blit(utils.ui_set, (self.x + (self.w - 1) * utils.ui_size, self.y), ((self.sheet_x + shift + 2) * utils.ui_size, self.sheet_y * utils.ui_size, utils.ui_size, utils.ui_size * 2))
 
 		# draw text
 		setTextColor(self.text_shadow_color)
@@ -57,10 +57,10 @@ class Button:
 		drawText(self.text, self.x + 8, self.y + 8)
 
 	def isMouseOver(self, mouse_x, mouse_y):
-		return not(mouse_x >= self.x+self.w*utils.ui_size
-				or mouse_x <= self.x
-				or mouse_y >= self.y+utils.ui_size*2
-				or mouse_y <= self.y)
+		return not(mouse_x >= self.x + self.w * utils.ui_size
+				   or mouse_x <= self.x
+				   or mouse_y >= self.y + utils.ui_size * 2
+				   or mouse_y <= self.y)
 
 
 

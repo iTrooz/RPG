@@ -13,8 +13,8 @@ class Scene:
 		# définir la zone que la caméra voit
 		box_x = math.floor(play_state.camera_x / utils.tile_size)
 		box_y = math.floor(play_state.camera_y / utils.tile_size)
-		box_w = math.floor(utils.WIDTH / utils.tile_size)+1
-		box_h = math.floor(utils.HEIGHT / utils.tile_size)+2
+		box_w = math.floor(utils.WIDTH / utils.tile_size) + 1
+		box_h = math.floor(utils.HEIGHT / utils.tile_size) + 2
 
 		# pour chaque coordonnée visible par la caméra
 		for x in range(box_x, box_x+box_w):

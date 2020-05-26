@@ -1,9 +1,7 @@
-import utils
-import pygame
-
 class Tile:
 	sheet_x = None
 	sheet_y = None
+	teleport = None
 
 	# collisions
 	coll_sides = None

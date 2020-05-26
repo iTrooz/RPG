@@ -1,11 +1,10 @@
-import utils
-import dialogs
 import pygame
-import saver
+from others import saver, dialogs
 import math
 from game_states.game_state import GameState
 from world import sceneInstances
 from entities import entities
+import utils
 
 
 class PlayGameState(GameState):
@@ -91,8 +90,8 @@ def updateCameraToPlayer(play_state):
 	player_tile_y = play_state.player.y * utils.tile_size - utils.HEIGHT / 2
 
 	# then add with the advancement of the player sliding
-	play_state.camera_x = player_tile_x + play_state.player.moving_pixel*play_state.player.direction.xy[0] - utils.tile_size/2
-	play_state.camera_y = player_tile_y + play_state.player.moving_pixel*play_state.player.direction.xy[1] - utils.tile_size/2
+	play_state.camera_x = player_tile_x + play_state.player.moving_pixel * play_state.player.direction.xy[0] - utils.tile_size / 2
+	play_state.camera_y = player_tile_y + play_state.player.moving_pixel * play_state.player.direction.xy[1] - utils.tile_size / 2
 
 	# utils.camera_x = 0
 	# utils.camera_y = 0
