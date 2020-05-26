@@ -53,14 +53,13 @@ class AliveEntity(Entity):
 				self.x+=self.direction.xy[0]
 				self.y+=self.direction.xy[1]
 				self.moving = False
-			else:
-				return
-		for i in range(len(self.down_keys)):
-			if self.down_keys[i] is not None:
-				self.direction = self.down_keys[i]
-				self.moving = True
-		if self.moving and self.hasCollision():
-			self.moving = False
+		else:
+			for i in range(len(self.down_keys)):
+				if self.down_keys[i] is not None:
+					self.direction = self.down_keys[i]
+					self.moving = True
+			if self.moving and self.hasCollision():
+				self.moving = False
 
 	def hasCollision(self):
 		# 3- pour faire l'inverse

@@ -15,24 +15,29 @@ class Button:
 	isPress = False
 	isHover = False
 
-	def __init__(self, x, y, w, sheet_x, sheet_y):
+	text = None
+	text_shadow_color = (190, 100, 20)
+	text_color = (255, 255, 255)
+
+
+	def __init__(self, x, y, text, sheet_x=0, sheet_y=2):
 		self.x = x
 		self.y = y
-		self.w = w
+		self.text = text
 		self.sheet_x = sheet_x
 		self.sheet_y = sheet_y
+		self.w = getTextLength(self.text)+1
 
 	def update(self):
 		m_x, m_y = pygame.mouse.get_pos()
 		self.isHover = self.isMouseOver(m_x, m_y)
-		if (self.isHover):
-			self.isPress = pygame.mouse.get_pressed()[0]
+		self.isPress = pygame.mouse.get_pressed()[0]
 
 	def draw(self):
-		if self.isPress:
-			shift = 6
-		elif self.isHover:
+		if self.isHover:
 			shift = 3
+			if self.isPress:
+				shift = 6
 		else:
 			shift = 0
 
@@ -44,6 +49,12 @@ class Button:
 				utils.game_display.blit(utils.ui_set, (self.x + i * utils.ui_size, self.y), ((self.sheet_x+shift+1) * utils.ui_size, self.sheet_y * utils.ui_size, utils.ui_size, utils.ui_size * 2))
 		# draw right border
 		utils.game_display.blit(utils.ui_set, (self.x + (self.w-1) * utils.ui_size, self.y), ((self.sheet_x+shift+2) * utils.ui_size, self.sheet_y * utils.ui_size, utils.ui_size, utils.ui_size * 2))
+
+		# draw text
+		setTextColor(self.text_shadow_color)
+		drawText(self.text, self.x + 8, self.y + 6)
+		setTextColor(self.text_color)
+		drawText(self.text, self.x + 8, self.y + 8)
 
 	def isMouseOver(self, mouse_x, mouse_y):
 		return not(mouse_x >= self.x+self.w*utils.ui_size
@@ -65,6 +76,20 @@ def setTextColor(new_color):
 		pixels.close()
 		actual_color = new_color
 		del pixels
+
+def getTextLength(text):
+	i = 0
+	length = 0
+	while (i<len(text)):
+		c = text[i]
+		length += 1
+
+		# caractere special
+		if c == '/':
+			val, y = decodeSpecialChar(text[i:])
+			i+=y
+		i+=1
+	return length
 
 def drawText(text, x, y):
 	screen_x = x

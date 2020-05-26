@@ -20,7 +20,7 @@ class PlayGameState(GameState):
 
 	world_ticks = 0
 
-	but = dialogs.Button(20, 20, 7, 0, 2)
+	but = dialogs.Button(20, 20, "Bouton")
 
 	# -------------------------------- #
 
@@ -51,21 +51,16 @@ class PlayGameState(GameState):
 		# text example
 		text_x, text_y = utils.convertCoordinates(math.cos(self.world_ticks / 20) + 2, math.sin(self.world_ticks / 20) + 2)
 		dialogs.setTextColor((255, 255, 255))
-		dialogs.drawText("Salut Thomas! /?C/-omo est/-as?", text_x - utils.scale_factor, text_y)
-		dialogs.drawText("Salut Thomas! /?C/-omo est/-as?", text_x + utils.scale_factor, text_y)
-		dialogs.drawText("Salut Thomas! /?C/-omo est/-as?", text_x, text_y - utils.scale_factor)
-		dialogs.drawText("Salut Thomas! /?C/-omo est/-as?", text_x, text_y + utils.scale_factor)
+		dialogs.drawText("Salut! /?C/-omo est/-as?", text_x - utils.scale_factor, text_y)
+		dialogs.drawText("Salut! /?C/-omo est/-as?", text_x + utils.scale_factor, text_y)
+		dialogs.drawText("Salut! /?C/-omo est/-as?", text_x, text_y - utils.scale_factor)
+		dialogs.drawText("Salut! /?C/-omo est/-as?", text_x, text_y + utils.scale_factor)
 		dialogs.setTextColor((0, 0, 0))
-		dialogs.drawText("Salut Thomas! /?C/-omo est/-as?", text_x, text_y)
+		dialogs.drawText("Salut! /?C/-omo est/-as?", text_x, text_y)
 
 		# button example
 		self.but.update()
-
 		self.but.draw()
-		dialogs.setTextColor((190, 100, 20))
-		dialogs.drawText("Bouton", self.but.x+8, self.but.y+6)
-		dialogs.setTextColor((255, 255, 255))
-		dialogs.drawText("Bouton", self.but.x+8, self.but.y+8)
 
 
 
