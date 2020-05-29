@@ -18,7 +18,7 @@ class PlayState(GameState):
 	player = None
 	actual_scene = None # set in utils
 
-	but = dialogs.Button(20, 20, "Bouton")
+	alpha = 0
 
 	# -------------------------------- #
 
@@ -33,28 +33,32 @@ class PlayState(GameState):
 		pass
 
 	def update(self):
-
 		utils.game_display.fill((0, 0, 0))
 
-		# updating
+		# update
 		handleEvents(self)
-		self.actual_scene.draw()
-
 		self.player.update()
-		self.player.draw()
-
+		updateCameraToPlayer(self)
 		for i in self.actual_entities:
 			i.update()
+
+		# draw
+		self.actual_scene.draw()
+		self.player.draw()
+		for i in self.actual_entities:
 			i.draw()
-
-		updateCameraToPlayer(self)
-
-		# button example
-		self.but.update()
-		self.but.draw()
+		for i in range(self.player.max_life):
+			if (i > self.player.life):
+				shift = 1
+			else:
+				shift = 0
+			utils.drawSprite(utils.ui_set, utils.ui_size, 16 + i*utils.ui_size*1.5, 16, shift, 0)
 
 		s = pygame.Surface((utils.WIDTH, utils.HEIGHT), pygame.SRCALPHA)  # per-pixel alpha
-		s.fill((255, 255, 255, 128))  # notice the alpha value in the color
+		alpha = self.alpha
+		if alpha > 255:
+			alpha = 255
+		s.fill((0, 0, 0, alpha))  # notice the alpha value in the color
 		utils.game_display.blit(s, (0, 0))
 
 

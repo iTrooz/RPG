@@ -10,6 +10,6 @@ player_anim_set = {
 
 player_snake_set = {
 	"idle": Animation(0, 12, 0),
-	"walk": Animation(0, 12, 6, 2),
+	"walk": Animation(0, 12, 6, 1),
 }
 

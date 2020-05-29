@@ -11,7 +11,7 @@ def loadImage(path, scale):
 	return image
 
 def drawSprite(sprite_set, sprite_size, screen_x, screen_y, sheet_x, sheet_y, sheet_w=1, sheet_h=1):
-	game_display.blit(sprite_set, (screen_x, screen_y), (sheet_x * sprite_size, sheet_y * sprite_size, sheet_w * sprite_size, sheet_h * sprite_size))
+	game_display.blit(sprite_set, (math.floor(screen_x), math.floor(screen_y)), (sheet_x * sprite_size, sheet_y * sprite_size, sheet_w * sprite_size, sheet_h * sprite_size))
 
 def changeState(new_state):
 	global actual_state
@@ -21,6 +21,8 @@ def changeState(new_state):
 
 
 """VARIABLES"""
+
+tp_ok =  False
 
 # time
 frame_duration = 1/30
