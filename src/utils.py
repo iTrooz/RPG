@@ -10,8 +10,14 @@ def loadImage(path, scale):
 	image = pygame.transform.scale(image, (image.get_width()*scale, image.get_height()*scale))
 	return image
 
-def drawSprite(sprite_set, sprite_size, screen_x, screen_y, sheet_x, sheet_y):
-	game_display.blit(sprite_set, (screen_x, screen_y), (sheet_x * sprite_size, sheet_y * sprite_size, sprite_size, sprite_size))
+def drawSprite(sprite_set, sprite_size, screen_x, screen_y, sheet_x, sheet_y, sheet_w=1, sheet_h=1):
+	game_display.blit(sprite_set, (screen_x, screen_y), (sheet_x * sprite_size, sheet_y * sprite_size, sheet_w * sprite_size, sheet_h * sprite_size))
+
+def changeState(new_state):
+	global actual_state
+	if actual_state != new_state:
+		actual_state = new_state
+		actual_state.selected()
 
 
 """VARIABLES"""
@@ -59,5 +65,5 @@ def searchScene(ida):
 
 """VARIABLES"""
 
-actual_state = states_instances.play_state
+actual_state = states_instances.menu_state
 states_instances.play_state.actual_scene = sceneInstances.forest

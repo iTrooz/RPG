@@ -1,3 +1,5 @@
+import installer
+
 import time
 from datetime import datetime
 import pygame

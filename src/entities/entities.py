@@ -29,8 +29,8 @@ class AliveEntity(Entity):
 
 	down_keys = [None] * 4
 
-	x = 13
-	y = 10
+	x = 0
+	y = 0
 
 	def preDraw(self):
 		# transform coordinates
@@ -137,13 +137,13 @@ class Player(AliveEntity):
 		else:
 			(screen_x, screen_y), sheet_x, sheet_y = super().preDraw()
 
-			super().finalDraw((screen_x, screen_y), sheet_x, sheet_y, utils.tile_size-self.anim_tp)
+			# super().finalDraw((screen_x, screen_y), sheet_x, sheet_y, utils.tile_size-self.anim_tp)
 			# super().finalDraw((screen_x, screen_y+self.anim_tp), sheet_x, sheet_y, utils.tile_size-self.anim_tp)
 
 			if self.teleporter is not None and self.teleporter["scene"] == utils.actual_state.actual_scene:
 				screen_x, screen_y = utils.convertCoordinates(self.teleporter["x"], self.teleporter["y"])
 
-				super().finalDraw((screen_x, screen_y), sheet_x, sheet_y, self.anim_tp)
+				# super().finalDraw((screen_x, screen_y), sheet_x, sheet_y, self.anim_tp)
 				# super().finalDraw((screen_x, screen_y+(32-self.anim_tp)), sheet_x, sheet_y, self.anim_tp)
 
 	def keyDetection(self, event):
@@ -154,3 +154,27 @@ class Player(AliveEntity):
 				self.down_keys[m.id] = m
 			else:
 				self.down_keys[m.id] = None
+
+
+
+
+
+class Snake(AliveEntity):
+
+	def __init__(self):
+		self.animation_manager = animation.AnimationManager(animationInstances.player_snake_set, "walk")
+
+	def draw(self):
+		super().draw()
+
+	def update(self):
+		super().update()
+
+
+"""
+# super().finalDraw((screen_x, screen_y), sheet_x, sheet_y, utils.tile_size-self.anim_tp)
+# super().finalDraw((screen_x, screen_y+self.anim_tp), sheet_x, sheet_y, utils.tile_size-self.anim_tp)
+
+# super().finalDraw((screen_x, screen_y), sheet_x, sheet_y, self.anim_tp)
+# super().finalDraw((screen_x, screen_y+(32-self.anim_tp)), sheet_x, sheet_y, self.anim_tp)	
+"""

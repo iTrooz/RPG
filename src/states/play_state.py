@@ -24,6 +24,10 @@ class PlayState(GameState):
 
 	def __init__(self):
 		self.player = entities.Player()
+		self.player.x = 13
+		self.player.y = 10
+
+		self.actual_entities.append(entities.Snake())
 
 	def selected(self):
 		pass
@@ -45,20 +49,13 @@ class PlayState(GameState):
 
 		updateCameraToPlayer(self)
 
-
-		# text example
-		text_x, text_y = utils.convertCoordinates(math.cos(utils.ticks / 20) + 2, math.sin(utils.ticks / 20) + 2)
-		dialogs.setTextColor((255, 255, 255))
-		dialogs.drawText("Salut! /?C/-omo est/-as?", text_x - utils.scale_factor, text_y)
-		dialogs.drawText("Salut! /?C/-omo est/-as?", text_x + utils.scale_factor, text_y)
-		dialogs.drawText("Salut! /?C/-omo est/-as?", text_x, text_y - utils.scale_factor)
-		dialogs.drawText("Salut! /?C/-omo est/-as?", text_x, text_y + utils.scale_factor)
-		dialogs.setTextColor((0, 0, 0))
-		dialogs.drawText("Salut! /?C/-omo est/-as?", text_x, text_y)
-
 		# button example
 		self.but.update()
 		self.but.draw()
+
+		s = pygame.Surface((utils.WIDTH, utils.HEIGHT), pygame.SRCALPHA)  # per-pixel alpha
+		s.fill((255, 255, 255, 128))  # notice the alpha value in the color
+		utils.game_display.blit(s, (0, 0))
 
 
 
