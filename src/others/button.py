@@ -8,8 +8,8 @@ actual_color = (255, 255, 255)
 pixels = None
 
 class Button:
-	sheet_x = None
-	sheet_y = None
+	sheet_x = 0
+	sheet_y = 2
 
 	x = None
 	y = None
@@ -20,20 +20,15 @@ class Button:
 	isHover = False
 	listener = None
 
-	text = None
 	decoded_text = None
 	text_shadow_color = (194, 95, 9)
 	text_color = (255, 255, 255)
 
 
-	def __init__(self, x, y, text, w=None, listener=None, sheet_x=0, sheet_y=2):
+	def __init__(self, decoded_text, x, y, w=None):
+		self.decoded_text = decoded_text
 		self.x = x
 		self.y = y
-		self.text = text
-		self.decoded_text = verse.decode(text)
-		self.sheet_x = sheet_x
-		self.sheet_y = sheet_y
-		self.listener = listener
 		if w is None:
 			self.w = len(self.decoded_text)
 		else:

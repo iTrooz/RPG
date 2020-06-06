@@ -15,7 +15,7 @@ def check(name):
 		print("Module "+name+" non installé ! Installation...")
 		main(['install', name])
 		importlib.import_module(name)
-	print("Module "+name+" installé !")
+		print("Module "+name+" installé !")
 
 
 check("pygame")

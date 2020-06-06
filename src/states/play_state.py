@@ -1,22 +1,22 @@
 import pygame
-from others import saver, dialogs
+from others import saver
 import math
 from states.state import GameState
 from world import sceneInstances
 from entities import entities
 import utils
-
+from states import states_instances
 
 class PlayState(GameState):
 
 	camera_x = 0
 	camera_y = 0
 
-	actual_entities = []
+	actual_entities = [] # a mettre dans actual_scene !!
 
 	actual_scene = None
 	player = None
-	actual_scene = None # set in utils
+	actual_scene = None
 
 	alpha = 0
 
@@ -27,7 +27,9 @@ class PlayState(GameState):
 		self.player.x = 13
 		self.player.y = 10
 
-		self.actual_entities.append(entities.Snake())
+		self.actual_scene = sceneInstances.forest
+
+		self.actual_entities = [entities.Snake()]
 
 	def selected(self):
 		pass
@@ -48,7 +50,7 @@ class PlayState(GameState):
 		for i in self.actual_entities:
 			i.draw()
 		for i in range(self.player.max_life):
-			if (i > self.player.life):
+			if (i >= self.player.life):
 				shift = 1
 			else:
 				shift = 0
@@ -61,17 +63,21 @@ class PlayState(GameState):
 		s.fill((0, 0, 0, alpha))  # notice the alpha value in the color
 		utils.game_display.blit(s, (0, 0))
 
+		# death
+		if (self.player.life == 0):
+			utils.actual_state = states_instances.menu_state
+			# states_instances.menu_state
+
 
 
 
 def handleEvents(play_state):
 	for event in pygame.event.get():
-		# window quit
 		if event.type == pygame.QUIT:
 			pygame.quit()
-			exit()
+			exit(0)
 		# key input
-		elif event.type == pygame.KEYDOWN or event.type == pygame.KEYUP:
+		if event.type == pygame.KEYDOWN or event.type == pygame.KEYUP:
 			if event.key == pygame.K_ESCAPE:
 				if event.type == pygame.KEYDOWN:
 					utils.menu = True
@@ -90,8 +96,8 @@ def updateCameraToPlayer(play_state):
 	player_tile_y = play_state.player.y * utils.tile_size - utils.HEIGHT / 2
 
 	# then add with the advancement of the player sliding
-	play_state.camera_x = player_tile_x + play_state.player.moving_pixel * play_state.player.direction.xy[0] - utils.tile_size / 2
-	play_state.camera_y = player_tile_y + play_state.player.moving_pixel * play_state.player.direction.xy[1] - utils.tile_size / 2
+	play_state.camera_x = player_tile_x + play_state.player.moving_pixel * play_state.player.direction.x - utils.tile_size / 2
+	play_state.camera_y = player_tile_y + play_state.player.moving_pixel * play_state.player.direction.y - utils.tile_size / 2
 
 	# utils.camera_x = 0
 	# utils.camera_y = 0

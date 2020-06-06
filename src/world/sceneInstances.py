@@ -7,7 +7,7 @@ from world.tileInstances import *
 
 forest.map = [
 	[grs, gt_, gnw, g_n, g_n, g_n, g_n, gne, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs],
-	[grs, grs, gsw, grs, grs, grs, grs, g_e, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs],
+	[grs, grs, gsw, grs, grs, ch1, grs, g_e, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs],
 	[grs, grs, stn, gsw, grs, grs, g_s, gse, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs],
 	[grs, grs, grs, stn, g_w, g_e, stn, stn, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs],
 	[grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs],
@@ -15,7 +15,7 @@ forest.map = [
 	[grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs],
 	[grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs],
 	[grs, grs, grs, stn, stn, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs],
-	[grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, stn, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs],
+	[grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, stn, grs, grs, ch2, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs],
 	[grs, grs, grs, grs, grs, grs, grs, stn, stn, stn, stn, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs],
 	[grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs],
 	[grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs, grs],

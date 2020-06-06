@@ -2,6 +2,7 @@ class Tile:
 	sheet_x = None
 	sheet_y = None
 	teleport = None
+	content = None
 
 	# collisions
 	coll_sides = None

@@ -29,6 +29,7 @@ class AliveEntity(Entity):
 
 	life = 3
 	max_life = 3
+	damageCounter = 0
 
 	# pourcentage d'avancement d'un block par frame (0-1)
 	# doit être un nombre tel que 100/x = entier
@@ -37,36 +38,34 @@ class AliveEntity(Entity):
 	x = 0
 	y = 0
 
-	def preDraw(self):
+	def draw(self):
 		# transform coordinates
 		screen_x, screen_y = utils.convertCoordinates(self.x, self.y)
 		if self.moving:
-			screen_x += self.moving_pixel * self.direction.xy[0]
-			screen_y += self.moving_pixel * self.direction.xy[1]
+			screen_x += self.moving_pixel * self.direction.x
+			screen_y += self.moving_pixel * self.direction.y
 		# get sprite
 		sheet_x, sheet_y = self.animation_manager.getSpritePos(self.direction)
 		# draw
-		return (screen_x, screen_y), sheet_x, sheet_y
-
-	def finalDraw(self, screen, sheet_x, sheet_y, ysize=utils.tile_size):
-		utils.game_display.blit(utils.tile_set, screen, (sheet_x * utils.tile_size, sheet_y * utils.tile_size, utils.tile_size, ysize))
-
-
-	def draw(self):
-		screen, sheet_x, sheet_y = self.preDraw()
-		self.finalDraw(screen, sheet_x, sheet_y)
+		utils.game_display.blit(utils.tile_set, (screen_x, screen_y), (sheet_x * utils.tile_size, sheet_y * utils.tile_size, utils.tile_size, utils.tile_size))
 
 	"""ENTITY MOVEMENT"""
 
 	def update(self):
 		super().update()
+
+		if self.damageCounter != 0:
+			self.damageCounter += 1
+			if self.damageCounter == 40:
+				self.damageCounter = 0
+
 		self.animation_manager.updateAnim()
 		if self.moving:
 			self.moving_pixel = (self.moving_pixel + self.speed * utils.tile_size) # passage 0-1 en 0-32 pour les 32 pixels du tile_size
 			if self.moving_pixel>= utils.tile_size:
 				self.moving_pixel = 0
-				self.x+=self.direction.xy[0]
-				self.y+=self.direction.xy[1]
+				self.x+=self.direction.x
+				self.y+=self.direction.y
 				self.moving = False
 
 	def hasCollision(self):
@@ -78,7 +77,7 @@ class AliveEntity(Entity):
 			return True
 
 		# obtenir la position de la prochaine case
-		nx, ny  = self.x + self.direction.xy[0], self.y + self.direction.xy[1]
+		nx, ny  = self.x + self.direction.x, self.y + self.direction.y
 
 		# test si la prochaine case est dans la carte
 		if nx < 0 or nx == states_instances.play_state.actual_scene.map_width or ny < 0 or ny == states_instances.play_state.actual_scene.map_height:
@@ -92,12 +91,14 @@ class AliveEntity(Entity):
 		# aucune collision prévue
 		return False
 
+	def hit(self):
+		self.life -= 1
+		self.damageCounter = 1
+
 
 class Player(AliveEntity):
 
 	anim_tp = 0
-
-	damageCounter = 0
 
 	down_keys = [None] * 4
 
@@ -113,14 +114,9 @@ class Player(AliveEntity):
 			if self.hasCollision():
 				self.moving = False
 		if self.damageCounter == 0:
-			for ent in utils.actual_state.actual_entities:
+			for ent in states_instances.play_state.actual_entities:
 				if ent.x == self.x and ent.y == self.y:
-					self.life -= 1
-					self.damageCounter = 1
-		else:
-			self.damageCounter+=1
-			if self.damageCounter==40:
-				self.damageCounter = 0
+					self.hit()
 
 
 		super().update()
@@ -172,6 +168,20 @@ class Player(AliveEntity):
 				self.down_keys[m.id] = m
 			else:
 				self.down_keys[m.id] = None
+		elif event.type == pygame.KEYDOWN:
+			if key == pygame.K_SPACE:
+					nx, ny = (self.y+self.direction.y, self.x+self.direction.x)
+					ctile = states_instances.play_state.actual_scene.map[ny, nx]
+					if ctile.content is not None:
+						states_instances.inv_state.othercontent = ctile.content
+						utils.changeState(states_instances.inv_state)
+					else:
+						for ent in states_instances.play_state.actual_entities:
+							if ent.x == nx and ent.y == ny:
+								ent.hit()
+
+
+
 
 
 
@@ -187,7 +197,7 @@ class Snake(AliveEntity):
 
 	def update(self):
 		if not self.moving:
-			if randint(0, 3)==0:
+			if randint(0, 10)==0:
 				d = directions.getByID(randint(0, 3))
 				self.direction = d
 				if not self.hasCollision():

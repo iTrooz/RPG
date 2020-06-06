@@ -15,6 +15,9 @@ main -> constructeurs -> instances ->  -> utils
 
 # game updating
 def gameUpdate():
+	if utils.to_change is not None:
+		utils.actual_state = utils.to_change
+		utils.to_change = None
 	utils.actual_state.update()
 
 # main loop logic

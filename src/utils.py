@@ -1,5 +1,6 @@
 import pygame
 import math
+from others import dialogs_instances
 
 """BASE"""
 
@@ -13,12 +14,16 @@ def loadImage(path, scale):
 def drawSprite(sprite_set, sprite_size, screen_x, screen_y, sheet_x, sheet_y, sheet_w=1, sheet_h=1):
 	game_display.blit(sprite_set, (math.floor(screen_x), math.floor(screen_y)), (sheet_x * sprite_size, sheet_y * sprite_size, sheet_w * sprite_size, sheet_h * sprite_size))
 
+to_change = None
+
 def changeState(new_state):
 	global actual_state
+	global to_change
 	if actual_state != new_state:
-		actual_state = new_state
-		actual_state.selected()
+		to_change = new_state
 
+def getDialogue(dialogue_name):
+	return dialogs_instances.languages[language][dialogue_name]
 
 """VARIABLES"""
 
@@ -45,8 +50,7 @@ WIDTH = 800
 HEIGHT = 608
 game_display = pygame.display.set_mode((WIDTH, HEIGHT))
 
-# game states
-
+language = "english"
 
 """IG USE"""
 
@@ -68,4 +72,3 @@ def searchScene(ida):
 """VARIABLES"""
 
 actual_state = states_instances.menu_state
-states_instances.play_state.actual_scene = sceneInstances.forest

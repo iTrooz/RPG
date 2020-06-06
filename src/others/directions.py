@@ -3,12 +3,14 @@ import pygame
 
 class Direction:
 	id = None
-	xy = (0, 0)
+	x = 0
+	y = 0
 	key = None
 
 	def __init__(self, ida, xy, key):
 		self.id = ida
-		self.xy = xy
+		self.x = xy[0]
+		self.y = xy[1]
 		self.key = key
 
 SOUTH = Direction(0, (0, 1), pygame.K_DOWN)
