@@ -23,7 +23,7 @@ def gameUpdate():
 		utils.to_change = None
 	utils.actual_state.update()
 
-# main loop logic
+# main loop logicS
 pygame.init()
 while True:
 	time_before = datetime.now()
