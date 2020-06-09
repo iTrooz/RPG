@@ -12,8 +12,6 @@ class PlayState(GameState):
 	camera_x = 0
 	camera_y = 0
 
-	actual_entities = [] # a mettre dans actual_scene !!
-
 	actual_scene = None
 	player = None
 	actual_scene = None
@@ -29,8 +27,6 @@ class PlayState(GameState):
 
 		self.actual_scene = sceneInstances.forest
 
-		self.actual_entities = [entities.Snake()]
-
 	def selected(self):
 		pass
 
@@ -41,13 +37,13 @@ class PlayState(GameState):
 		handleEvents(self)
 		self.player.update()
 		updateCameraToPlayer(self)
-		for i in self.actual_entities:
+		for i in self.actual_scene.actual_entities:
 			i.update()
 
 		# draw
 		self.actual_scene.draw()
 		self.player.draw()
-		for i in self.actual_entities:
+		for i in self.actual_scene.actual_entities:
 			i.draw()
 		for i in range(self.player.max_life):
 			if (i >= self.player.life):
@@ -62,11 +58,6 @@ class PlayState(GameState):
 			alpha = 255
 		s.fill((0, 0, 0, alpha))  # notice the alpha value in the color
 		utils.game_display.blit(s, (0, 0))
-
-		# death
-		if (self.player.life == 0):
-			utils.actual_state = states_instances.menu_state
-			# states_instances.menu_state
 
 
 

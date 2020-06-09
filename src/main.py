@@ -4,11 +4,14 @@ import time
 from datetime import datetime
 import pygame
 import utils
-from states import states_instances
+from world import sceneInstances
+from entities import entities
 
 """
-main -> constructeurs -> instances ->  -> utils
+main -> instances -> constructeurs -> utils
 """
+
+sceneInstances.forest.actual_entities = [entities.Snake()]
 
 
 # initializing

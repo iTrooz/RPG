@@ -1,7 +1,7 @@
-from world.scene import Scene
-forest = Scene(0) # warning non utile, PARCE QUE PYTHON FAIT *
-rocky_land = Scene(1)
+from world import scene
 
+forest = scene.Scene(0)
+rocky_land = scene.Scene(1)
 
 from world.tileInstances import *
 

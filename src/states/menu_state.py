@@ -4,10 +4,11 @@ import pygame
 from others import button, verse
 from states.state import GameState
 import states
+import states.play_state as play_state
 import entities
 
 def play_listener():
-	states.states_instances.play_state = states.play_state.PlayState()
+	states.states_instances.play_state = play_state.PlayState() # il est bête ?
 	utils.changeState(states.states_instances.play_state)
 
 

@@ -1,6 +1,7 @@
 from world import tile
 from world import sceneInstances
 
+
 # stone
 stn = tile.Tile(7, 0, True, True, True, True)
 # grass

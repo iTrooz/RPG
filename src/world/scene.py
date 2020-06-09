@@ -6,6 +6,8 @@ class Scene:
 	map_height = 16
 	map = []
 
+	actual_entities = []
+
 	def __init__(self, ida):
 		self.id = ida
 
