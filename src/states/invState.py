@@ -2,7 +2,7 @@ import math
 import utils
 import pygame
 from others import button, verse
-from states import states_instances
+from states import statesInstances
 from states.state import GameState
 import states
 
@@ -37,7 +37,7 @@ class InvState(GameState):
 				exit(0)
 			elif event.type == pygame.KEYDOWN:
 					if event.key == pygame.K_SPACE:
-							utils.changeState(states_instances.play_state)
+							utils.changeState(statesInstances.play_state)
 
 
 		utils.game_display.blit(inv, ((utils.WIDTH - new_x) / 2, ((utils.HEIGHT - new_y) / 2)))

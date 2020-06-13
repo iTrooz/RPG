@@ -3,7 +3,7 @@ import pygame
 from entities import animation, animationInstances
 import utils
 from others import directions
-from states import states_instances
+from states import statesInstances
 from random import randint
 
 
@@ -75,7 +75,7 @@ class AliveEntity(Entity):
 		# 3-x pour faire l'inverse
 
 		# test si on peut sortir de la case actuelle
-		ctile = states_instances.play_state.actual_scene.map[self.y][self.x]
+		ctile = statesInstances.play_state.actual_scene.map[self.y][self.x]
 		if ctile.coll_sides[self.direction.id]:
 			return True
 
@@ -83,11 +83,11 @@ class AliveEntity(Entity):
 		nx, ny  = self.x + self.direction.x, self.y + self.direction.y
 
 		# test si la prochaine case est dans la carte
-		if nx < 0 or nx == states_instances.play_state.actual_scene.map_width or ny < 0 or ny == states_instances.play_state.actual_scene.map_height:
+		if nx < 0 or nx == statesInstances.play_state.actual_scene.map_width or ny < 0 or ny == statesInstances.play_state.actual_scene.map_height:
 			return True
 
 		# test si on peut entrer dans la prochaine case
-		ctile = states_instances.play_state.actual_scene.map[ny][nx]
+		ctile = statesInstances.play_state.actual_scene.map[ny][nx]
 		if ctile.coll_sides[3 - self.direction.id]:
 			return True
 
@@ -98,9 +98,9 @@ class AliveEntity(Entity):
 		self.life -= 1
 		if self.life==0:
 			if self.player :
-				utils.actual_state = states_instances.menu_state
+				utils.actual_state = statesInstances.menu_state
 			else:
-				states_instances.play_state.actual_scene.actual_entities.remove(self)
+				statesInstances.play_state.actual_scene.actual_entities.remove(self)
 		else:
 			self.damageCounter = 1
 
@@ -125,7 +125,7 @@ class Player(AliveEntity):
 			if self.hasCollision():
 				self.moving = False
 		if self.damageCounter == 0:
-			for ent in states_instances.play_state.actual_scene.actual_entities:
+			for ent in statesInstances.play_state.actual_scene.actual_entities:
 				if ent.x == self.x and ent.y == self.y:
 					self.hit()
 
@@ -135,7 +135,7 @@ class Player(AliveEntity):
 		if self.moving:
 			self.teleporter = None
 		else:
-			ctile = states_instances.play_state.actual_scene.map[self.y][self.x]
+			ctile = statesInstances.play_state.actual_scene.map[self.y][self.x]
 			if ctile.teleport is None:
 				if utils.actual_state.alpha > 0:
 					utils.actual_state.alpha -= 5
@@ -167,12 +167,12 @@ class Player(AliveEntity):
 		elif event.type == pygame.KEYDOWN:
 			if key == pygame.K_SPACE:
 					nx, ny = (self.x+self.direction.x, self.y+self.direction.y)
-					ctile = states_instances.play_state.actual_scene.map[ny][nx]
+					ctile = statesInstances.play_state.actual_scene.map[ny][nx]
 					if ctile.content is not None:
-						states_instances.inv_state.othercontent = ctile.content
-						utils.changeState(states_instances.inv_state)
+						statesInstances.inv_state.othercontent = ctile.content
+						utils.changeState(statesInstances.inv_state)
 					else:
-						for ent in states_instances.play_state.actual_scene.actual_entities:
+						for ent in statesInstances.play_state.actual_scene.actual_entities:
 							if ent.x == nx and ent.y == ny:
 								ent.hit()
 

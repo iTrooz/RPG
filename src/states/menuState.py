@@ -4,12 +4,12 @@ import pygame
 from others import button, verse
 from states.state import GameState
 import states
-import states.play_state as play_state
+from states import playState
 import entities
 
 def play_listener():
-	states.states_instances.play_state = play_state.PlayState() # il est bête ?
-	utils.changeState(states.states_instances.play_state)
+	states.statesInstances.play_state = playState.PlayState() # il est bête ?
+	utils.changeState(states.statesInstances.play_state)
 
 
 class MenuState(GameState):
@@ -23,7 +23,7 @@ class MenuState(GameState):
 
 	def __init__(self):
 		# blueprint = [
-		# 	"Jugar", lambda: utils.changeState(states.states_instances.play_state),
+		# 	"Jugar", lambda: utils.changeState(states.statesInstances.play_state),
 		# 	"Salir", lambda: exit(),
 		# ]
 

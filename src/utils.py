@@ -1,6 +1,6 @@
 import pygame
 import math
-from others import dialogs_instances
+from others import dialogsInstances
 
 """BASE"""
 
@@ -23,7 +23,7 @@ def changeState(new_state):
 		to_change = new_state
 
 def getDialogue(dialogue_name):
-	return dialogs_instances.languages[language][dialogue_name]
+	return dialogsInstances.languages[language][dialogue_name]
 
 """VARIABLES"""
 
@@ -55,12 +55,12 @@ language = "english"
 """IG USE"""
 
 from world import sceneInstances
-from states import states_instances
+from states import statesInstances
 
 
 """FUNCTIONS"""
 def convertCoordinates(x, y):
-	return x * tile_size - math.floor(states_instances.play_state.camera_x), y * tile_size - math.floor(states_instances.play_state.camera_y)
+	return x * tile_size - math.floor(statesInstances.play_state.camera_x), y * tile_size - math.floor(statesInstances.play_state.camera_y)
 
 
 def searchScene(ida):
@@ -71,4 +71,4 @@ def searchScene(ida):
 
 """VARIABLES"""
 
-actual_state = states_instances.menu_state
+actual_state = statesInstances.menu_state

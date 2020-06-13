@@ -5,7 +5,7 @@ from states.state import GameState
 from world import sceneInstances
 from entities import entities
 import utils
-from states import states_instances
+from states import statesInstances
 
 class PlayState(GameState):
 
